@@ -3,9 +3,8 @@
 Interactive calendar heat map visualization
 
 Upload your file which contains:
-1) date column in yyyy-mm-dd format
-2) some numeric columns you need to show on calendar
-   you can choose several columns to display their sum
+1) Date column in yyyy-mm-dd format
+2) Some numeric columns you need to show on calendar. You can choose several columns to display their sum
 
 CSV file example:
 
