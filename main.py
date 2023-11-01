@@ -2,6 +2,7 @@ from heatmap_calendar import HeatMapCalendar
 import pandas as pd
 import re
 import streamlit as st
+from streamlit.components.v1 import components
 from datetime import date
 import random
 import os
@@ -18,7 +19,7 @@ def file_upload():
 def group_by_date(df, date_containing_column, number_containing_columns):
     df['_number'] = df[number_containing_columns].sum(axis=1)
 
-    df = df.groupby([date_containing_column]).agg({'_number': sum})
+    df = df.groupby([date_containing_column]).agg({'_number': 'sum'})
 
     return df
 
@@ -60,11 +61,6 @@ def get_years(df, date_column):
     return sorted(years, reverse=True)
 
 
-def build_css_in(html):
-    css_line = open('heatmap.css').read().replace('\n', '')
-    return re.sub('<link.*/>', f'<style>{css_line}</style>', html)
-
-
 def get_example_df():
     ex_name = 'example_df.csv'
     if os.path.exists(ex_name):
@@ -87,6 +83,8 @@ def get_example_df():
 
 
 def main():
+    st.set_page_config(page_title='Heatmap', page_icon=':calendar:', layout="wide", initial_sidebar_state="auto")
+    st.header('Visualize your daily data as a heat map!')
     _source = st.radio('Choose source', ['Use example', 'Upload file'], index=0)
 
     if _source == 'Use example':
@@ -99,30 +97,29 @@ def main():
     if st.session_state.original_df is None:
         return
     date_containing_column, number_containing_columns = set_columns(st.session_state.original_df, numbers)
-    st.write('Your table:')
-    st.dataframe(st.session_state.original_df, width=1000)
+
+    with st.expander('Your table:'):
+        st.dataframe(st.session_state.original_df, width=1200)
 
     if not validate(st.session_state.original_df, date_containing_column, number_containing_columns):
         return
 
     by_date_df = group_by_date(st.session_state.original_df, date_containing_column, number_containing_columns)
 
-    st.write('Grouped table:')
-    st.dataframe(by_date_df, width=1000)
+    with st.expander('Grouped table:'):
+        st.dataframe(by_date_df, width=1200)
 
     year = st.selectbox('Choose Year:', get_years(st.session_state.original_df, date_containing_column))
 
     year_calendar = HeatMapCalendar()
-    html_code = year_calendar.get_heatmap(year, by_date_df.to_dict()['_number']).decode()
-    html_code = build_css_in(html_code)
+    html_code = year_calendar.get_heatmap(year, by_date_df.to_dict()['_number'])
 
     if st.button(f'Save to {year}_calendar.html'):
         save_html(html_code, f'{year}_calendar.html')
         st.write("Saved")
-
-    st.write('Calendar')
-    legend = '<div class=red>>1000</div><div class=orange>>100</div><div class=yellow>>10</div><div class=light-yellow>>0</div>'
-    st.markdown(f'<div class=calendar>{legend}{html_code}</div>', unsafe_allow_html=True)
+    st.divider()
+    st.header('Calendar')
+    st.components.v1.html(html_code, width=1300, height=2000, scrolling=True)
 
 
 main()

@@ -1,7 +1,9 @@
-table {
+table.year {
   border-spacing: 0.5em;
   margin: 1rem auto;
-  width: 70%;
+  text-align: center;
+  position: relative;
+  top: 5em;
 }
 
 .td-day {
@@ -13,6 +15,7 @@ table {
   width: 100%;
   height: 100%;
   position: relative;
+  text-align: center
 }
 
 .td-day .tooltip {
@@ -61,4 +64,15 @@ tbody {
 }
 .mon .tue .wed .thu .fri .sat .sun{
     text-transform: lowercase;
+}
+
+td.legend {
+    padding: 0.5em;
+    width: 5em;
+    text-align: center;
+}
+table.legend {
+    position: fixed;
+    right: 0;
+    top: 0;
 }
