@@ -1,1 +1,1 @@
-echo "server.port = $PORT" >> ./.streamlit/config.toml
+echo "port = $PORT" >> ./.streamlit/config.toml
