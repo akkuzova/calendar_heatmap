@@ -91,14 +91,14 @@ def main():
 
     if _source == 'Use example':
         st.session_state.original_df = get_example_df()
-        date_containing_column, number_containing_columns = set_columns(st.session_state.original_df, [1, 2], 0)
+        numbers = [1, 2]
     else:
         st.session_state.original_df = file_upload()
-        date_containing_column, number_containing_columns = set_columns(st.session_state.original_df)
+        numbers = None
 
     if st.session_state.original_df is None:
         return
-
+    date_containing_column, number_containing_columns = set_columns(st.session_state.original_df, numbers)
     st.write('Your table:')
     st.dataframe(st.session_state.original_df, width=1000)
 
