@@ -16,5 +16,7 @@ CSV file example:
 |1992-06-09|5      |6      |
 |1992-02-19|7      |8      |
 
-Calendar example:
-[Calendar for 1993.html](Calendar_for_1993.html)
+Try:
+https://calendarheatmap-97de52753a46.herokuapp.com/
+
+![img.png](img.png)
