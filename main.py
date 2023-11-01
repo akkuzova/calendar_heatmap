@@ -7,6 +7,8 @@ from datetime import date
 import random
 import os
 
+WIDTH = 1274
+
 
 def file_upload():
     uploaded_file = st.file_uploader("Choose a csv file to upload", ['csv'])
@@ -99,7 +101,7 @@ def main():
     date_containing_column, number_containing_columns = set_columns(st.session_state.original_df, numbers)
 
     with st.expander('Your table:'):
-        st.dataframe(st.session_state.original_df, width=1200)
+        st.dataframe(st.session_state.original_df, width=WIDTH)
 
     if not validate(st.session_state.original_df, date_containing_column, number_containing_columns):
         return
@@ -107,7 +109,7 @@ def main():
     by_date_df = group_by_date(st.session_state.original_df, date_containing_column, number_containing_columns)
 
     with st.expander('Grouped table:'):
-        st.dataframe(by_date_df, width=1200)
+        st.dataframe(by_date_df, width=WIDTH)
 
     year = st.selectbox('Choose Year:', get_years(st.session_state.original_df, date_containing_column))
 
@@ -119,7 +121,7 @@ def main():
         st.write("Saved")
     st.divider()
     st.header('Calendar')
-    st.components.v1.html(html_code, width=1300, height=2000, scrolling=True)
+    st.components.v1.html(html_code, width=WIDTH, height=2000, scrolling=True)
 
 
 main()
