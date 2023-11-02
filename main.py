@@ -79,10 +79,10 @@ def get_example_df():
     for _date in random_dates:
         _dict['col_1'][_date.strftime('%Y-%m-%d')] = random.randint(50, 1100)
         _dict['col_2'][_date.strftime('%Y-%m-%d')] = random.randint(0, 60)
-    df = pd.DataFrame(_dict)
-    df.to_csv(ex_name)
+    df = pd.DataFrame(_dict).reset_index()
+    df.to_csv(ex_name, index=False)
 
-    return df.reset_index()
+    return df
 
 
 def main():
