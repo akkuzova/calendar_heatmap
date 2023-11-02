@@ -2,7 +2,6 @@ from heatmap_calendar import HeatMapCalendar
 import pandas as pd
 import re
 import streamlit as st
-from streamlit.components.v1 import components
 from datetime import date
 import random
 import os
@@ -11,6 +10,8 @@ WIDTH = 1274
 
 
 def file_upload():
+    st.write('Upload your file which contains: 1)Date column in yyyy-mm-dd format '
+             '2)Some numeric columns you need to show on calendar. You can choose several columns to display their sum')
     uploaded_file = st.file_uploader("Choose a csv file to upload", ['csv'])
     if uploaded_file is None:
         return
@@ -35,12 +36,12 @@ def validate(df, date_column, number_columns):
     for key, row in df.iterrows():
         _date = re.match("\d\d\d\d-\d\d-\d\d", str(row[date_column]))
         if not _date:
-            st.error(f'Row {key}, {row} contains wrong date {row[date_column]}')
+            st.error(f'Row "{key}" contains wrong date "{row[date_column]}"')
             return False
 
         for number_column in number_columns:
             if not str(row[number_column]).isnumeric():
-                st.error(f'Row {key}, {row} contains non-numeric value {row[number_column]}')
+                st.error(f'Row "{key}" contains non-numeric value "{row[number_column]}"')
                 return False
     return True
 
